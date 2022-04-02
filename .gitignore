@@ -1,2 +1,11 @@
 
 .idea/
+
+data/
+
+model/
+
+screenshots/
+/data
+/model
+/screenshots
