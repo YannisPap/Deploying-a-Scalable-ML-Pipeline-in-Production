@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+          
+      - name: Install miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: 3.8
+          
+      - name: Setup dvc
+        uses: iterative/setup-dvc@v1
+          
+      - name: Install dependencies
+        shell: bash
+        run: conda install pytest flake8
+
+      - name: Pull from dvc
+        run: dvc pull
+        
+      - name: Setup pytest
+        uses: cclauss/GitHub-Action-for-pytest@0.5.0
+
+      - name: Setup Flake8
+        uses: suo/flake8-github-action@v1
+        with:
+          checkName: build
+          
+      
+          
+
