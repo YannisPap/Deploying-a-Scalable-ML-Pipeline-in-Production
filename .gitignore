@@ -1,11 +1,5 @@
 
-.idea/
-
 data/
 
-model/
-
-screenshots/
+.idea/
 /data
-/model
-/screenshots
